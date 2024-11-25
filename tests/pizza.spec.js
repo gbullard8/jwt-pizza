@@ -1,5 +1,6 @@
 import { test, expect } from 'playwright-test-coverage';
 
+
 test('home page', async ({ page }) => {
     await page.goto('/');
 
@@ -117,3 +118,56 @@ test('purchase with login', async ({ page }) => {
     // Check balance
     await expect(page.getByText('0.008')).toBeVisible();
 });
+
+test.describe('About Page Tests', () => {
+
+
+    test('should render the main image', async ({ page }) => {
+        await page.goto('/about');
+        const mainImage = page.locator("img[src='jwt-pizza-logo.png']");
+        await expect(mainImage).toBeVisible();
+    });
+
+    test('should render all employee images with tooltips', async ({ page }) => {
+        await page.goto('/about');
+
+        const employees = [
+            { name: 'James', src: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80' },
+            { name: 'Maria', src: 'https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80' },
+            { name: 'Anna', src: 'https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80' },
+            { name: 'Brian', src: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80' },
+        ];
+
+        for (const employee of employees) {
+            const employeeImage = page.locator(`img[src='${employee.src}']`);
+            await expect(employeeImage).toBeVisible();
+
+            await employeeImage.hover();
+            const tooltip = page.locator(`text=${employee.name}`);
+            await expect(tooltip).toBeVisible();
+        }
+    });
+
+    test('should display correct section headings', async ({ page }) => {
+        await page.goto('/about');
+        const heading = page.locator('h2', { hasText: 'Our employees' });
+        await expect(heading).toBeVisible();
+    });
+
+    test('should have correct paragraphs text', async ({ page }) => {
+        await page.goto('/about');
+
+        const paragraphTexts = [
+            'At JWT Pizza, our amazing employees are the secret behind our delicious pizzas.',
+            'Our talented employees at JWT Pizza are true artisans.',
+            'JWT Pizza is home to a team of pizza enthusiasts who are truly passionate about their craft.',
+            'At JWT Pizza, our employees are more than just pizza makers. They are culinary artists who are deeply passionate about their craft.',
+        ];
+
+        for (const text of paragraphTexts) {
+            const paragraph = page.locator(`text=${text}`);
+            await expect(paragraph).toBeVisible();
+        }
+    });
+});
+
