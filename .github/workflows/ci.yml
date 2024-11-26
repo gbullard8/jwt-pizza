@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: https://pizza.cs329jwtpizza.com/
+      url: https://pizza.cs329jwtpizza.com
     env:
       version: ${{needs.build.outputs.version}}
     steps:
