@@ -58,7 +58,6 @@ jobs:
     needs: build
     permissions:
       id-token: write
-      contents: read
     runs-on: ubuntu-latest
     environment:
       name: staging
@@ -108,8 +107,8 @@ jobs:
         env:
           version: ${{needs.build.outputs.version}}
         with:
-          tag: stage-version-${{ env.version }}
-          name: Staging ${{ env.version }}
+          tag: version-${{ env.version }}
+          name: Version ${{ env.version }}
           body: |
             ## 🚀 Changes
 
